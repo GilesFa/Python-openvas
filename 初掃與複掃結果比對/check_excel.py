@@ -37,7 +37,7 @@ for line in old.readlines():
     #print(line)
     lista.append(line.replace('\n',''))#將每筆資料存入lista中
 
-lista.remove("任務名稱;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N)")
+lista.remove("任務名稱;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N);完成確認日期")
 # print("lista=",lista)
 
 listb =[]
@@ -46,7 +46,7 @@ for line in new.readlines():
     #print(line)
     listb.append(line.replace('\n','')) #將每筆資料存入listb中
 
-listb.remove("任務名稱;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N)")
+listb.remove("任務名稱;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N);完成確認日期")
 # print("listb=",listb)
 
 # #======================================取得未修補弱點的名稱與IP============================
@@ -73,6 +73,7 @@ listc_admin_old = []
 listc_os_old = []
 listc_status_old = []
 listc_result_old = []
+listc_confirmdata_old = []
 
 #取得所有未修補弱點的特定欄位，並且依序存入序列中
 for i in range(list_count_old):
@@ -85,6 +86,7 @@ for i in range(list_count_old):
     listc_os_old.append(v1[7]) #作業系統版本
     listc_status_old.append(v1[13]) #處理步驟
     listc_result_old.append(v1[14]) #是否可修補(Y/N)
+    listc_confirmdata_old.append(v1[16]) #完成確認日期
 
 # print("listc_name_old=",listc_name_old)
 # print("listc_ip_old",listc_ip_old)
@@ -133,8 +135,9 @@ for i in range(list_count_old):
     df_new.loc[((df_new['弱點描述'] == listc_name_old[i]) & (df_new['IP'] == listc_ip_old[i])), '系統管理者'] = listc_admin_old[i]
     df_new.loc[((df_new['弱點描述'] == listc_name_old[i]) & (df_new['IP'] == listc_ip_old[i])), 'Hostname'] = listc_hostname_old[i]
     df_new.loc[((df_new['弱點描述'] == listc_name_old[i]) & (df_new['IP'] == listc_ip_old[i])), 'OS版本'] = listc_os_old[i]
-    df_new.loc[((df_new['弱點描述'] == listc_name_old[i]) & (df_new['IP'] == listc_ip_old[i])), '處理步驟'] = listc_status_old[i]
     df_new.loc[((df_new['弱點描述'] == listc_name_old[i]) & (df_new['IP'] == listc_ip_old[i])), '是否可修補(Y/N)'] = listc_result_old[i]
+    df_new.loc[((df_new['弱點描述'] == listc_name_old[i]) & (df_new['IP'] == listc_ip_old[i])), '處理步驟'] = listc_status_old[i]
+    df_new.loc[((df_new['弱點描述'] == listc_name_old[i]) & (df_new['IP'] == listc_ip_old[i])), '完成確認日期'] = listc_confirmdata_old[i]  
 #print(df_new)
 
 #將新弱點標示為Y，運行的前提: 當df_new裡和df_old有相同的筆的資料時(代表弱點沒有被解決所以又出現於df_new的掃描結果中)，
