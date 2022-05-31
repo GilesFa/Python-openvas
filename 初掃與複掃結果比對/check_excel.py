@@ -83,8 +83,8 @@ for i in range(list_count_old):
     listc_hostname_old.append(v1[5]) #IP
     listc_admin_old.append(v1[6]) #系統管理者
     listc_os_old.append(v1[7]) #作業系統版本
-    listc_status_old.append(v1[14]) #處理步驟
-    listc_result_old.append(v1[15]) #是否可修補(Y/N)
+    listc_status_old.append(v1[13]) #處理步驟
+    listc_result_old.append(v1[14]) #是否可修補(Y/N)
 
 # print("listc_name_old=",listc_name_old)
 # print("listc_ip_old",listc_ip_old)
