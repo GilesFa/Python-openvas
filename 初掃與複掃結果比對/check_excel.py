@@ -22,35 +22,46 @@ try:
 except Exception as error:
     print("c:\tmp目錄已存在")
 
+'''
+這邊必須將excel轉成txt方便進行欄位內容比對，且需將"弱點解決方法"欄位移除，否則會因為內容有換行而導致
+資料的欄位數(columns)無法固定，進而導致部分比對會異常。
+'''
+#取得弱掃初掃結果清單
 df_old = pd.read_excel(rf'c:\tmp\{old_excel}.xlsx', sheet_name='High-level-ALL')
 df_old.drop("弱點解決方法",axis=1,inplace=True) #刪除欄位
-df_old.to_csv(rf'c:\tmp\{old_excel}.txt', sep=';', index=False)
+df_old.to_csv(rf'c:\tmp\{old_excel}.txt', sep=';', index=False) #依據分號;進行欄位切割，然後以csv形式存成txt檔案
 
+#弱掃複掃結果清單
 df_new = pd.read_excel(rf'c:\tmp\{new_excel}.xlsx', sheet_name='High-level-ALL')
 df_new.drop("弱點解決方法",axis=1,inplace=True) #刪除欄位
-df_new.to_csv(rf'c:\tmp\{new_excel}.txt', sep=';', index=False)
+df_new.to_csv(rf'c:\tmp\{new_excel}.txt', sep=';', index=False) #依據分號;進行欄位切割，然後以csv形式存成txt檔案
+
 
 #=====================================2. 讀取txt檔案=======================================
+
+#將取得弱掃初掃.txt的內容依序存入lista列表中
 lista =[]
-old = open(rf'c:\tmp\{old_excel}.txt', encoding='utf-8',)
+old = open(rf'c:\tmp\{old_excel}.txt', encoding='utf-8',)   
 for line in old.readlines():
     #print(line)
     lista.append(line.replace('\n',''))#將每筆資料存入lista中
+#移除不需要的欄位
+lista.remove("任務名稱;任務季度;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N);完成確認日期")
 
-lista.remove("任務名稱;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N);完成確認日期")
 # print("lista=",lista)
 
+#將取得弱掃複掃.txt的內容依序存入listb列表中
 listb =[]
 new = open(rf'c:\tmp\{new_excel}.txt', encoding='utf-8')
 for line in new.readlines():
     #print(line)
     listb.append(line.replace('\n','')) #將每筆資料存入listb中
-
-listb.remove("任務名稱;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N);完成確認日期")
+#移除不需要的欄位
+listb.remove("任務名稱;任務季度;漏洞類型;弱點描述;任務執行時間;IP;Hostname;系統管理者;OS版本;Port;Port Protocol;CVSS分數;風險等級;CVEs編號;處理步驟;是否可修補(Y/N);是否為新弱點(Y/N);完成確認日期")
 # print("listb=",listb)
 
 # #======================================取得未修補弱點的名稱與IP============================
-#將list轉換為集合，old-new會取得未修補的漏洞資料
+#將list轉換為集合，初掃(old)-複掃(new)會取得未修補的漏洞資料
 x_old = set(lista)
 y_old = set(listb)
 z_old= x_old - y_old
@@ -75,18 +86,18 @@ listc_status_old = []
 listc_result_old = []
 listc_confirmdata_old = []
 
-#取得所有未修補弱點的特定欄位，並且依序存入序列中
+#取得所有未修補弱點的特定欄位，並且依序存入序列中(0~16,弱點解決方法欄位被移除)
 for i in range(list_count_old):
     v1 = listc_old[i].split(';')
     #print(v1)
-    listc_name_old.append(v1[2]) #弱點描述
-    listc_ip_old.append(v1[4]) #IP
-    listc_hostname_old.append(v1[5]) #IP
-    listc_admin_old.append(v1[6]) #系統管理者
-    listc_os_old.append(v1[7]) #作業系統版本
-    listc_status_old.append(v1[13]) #處理步驟
-    listc_result_old.append(v1[14]) #是否可修補(Y/N)
-    listc_confirmdata_old.append(v1[16]) #完成確認日期
+    listc_name_old.append(v1[3]) #弱點描述
+    listc_ip_old.append(v1[5]) #IP
+    listc_hostname_old.append(v1[6]) #hostname
+    listc_admin_old.append(v1[7]) #系統管理者
+    listc_os_old.append(v1[8]) #作業系統版本
+    listc_status_old.append(v1[14]) #處理步驟
+    listc_result_old.append(v1[15]) #是否可修補(Y/N)
+    listc_confirmdata_old.append(v1[17]) #完成確認日期
 
 # print("listc_name_old=",listc_name_old)
 # print("listc_ip_old",listc_ip_old)
@@ -119,8 +130,8 @@ n = 0
 for i in range(list_count_new):
     v2 = listc_new[i].split(';')
     print(len(v2))
-    listc_name_new.append(v2[2])
-    listc_ip_new.append(v2[4])
+    listc_name_new.append(v2[3])
+    listc_ip_new.append(v2[5])
     # breakpoint()
 print("listc_name=",listc_name_new)
 print("listc_ip",listc_ip_new)
@@ -144,8 +155,9 @@ for i in range(list_count_old):
 #必須將df_old的"處理步驟"和""是否可修補(Y/N)"的內容填入df_new對應的欄位中，否則會因為資料不相同而被視為新的弱點("z2= y2 - x2"，會過濾出新的弱點的描述與IP)
 for i in range(list_count_new):
     # df_new.loc[~df_new['處理步驟'].isnull(), '是否為新弱點(Y/N)'] = 'N'
-    df_new.loc[((df_new['弱點描述'] == listc_name_new[i]) & (df_new['IP'] == listc_ip_new[i])), '是否為新弱點(Y/N)'] = 'Y'
+    # df_new.loc[((df_new['弱點描述'] == listc_name_new[i]) & (df_new['IP'] == listc_ip_new[i])), '是否為新弱點(Y/N)'] = 'Y'
+    df_new.loc[df_new['處理步驟'].isnull(), '是否為新弱點(Y/N)'] = 'Y'
     df_new.loc[~df_new['處理步驟'].isnull(), '是否為新弱點(Y/N)'] = 'N'
 print(df_new)
-df_new.to_excel(rf'c:\tmp\{today}-弱掃初掃與複掃合併結果清單.xlsx')
+df_new.to_excel(rf'c:\tmp\{today}-弱掃初掃與複掃合併結果清單.xlsx', sheet_name= f'High-level-ALL', index=False)
 
