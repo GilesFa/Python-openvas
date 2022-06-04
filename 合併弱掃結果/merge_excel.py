@@ -3,7 +3,7 @@ import os
 import glob
 import numpy as np
 import os
-from datetime import date
+from datetime import date, datetime
 
 '''
 此程式的目標功能:
@@ -13,10 +13,29 @@ from datetime import date
 4. 最後依據最後版本的excel檔，將其資料寫入mysql資料庫中，後續復掃的結果從資料庫中提取來比對
 '''
 #================================變數設定==================================================
-today = date.today()
-today = today.strftime("%Y%m%d")
-#設定輸出的檔案名稱
-outputfile = "弱點掃描結果清單"
+#抓取當前日期與季
+today = str(datetime.today())
+today_date = today.split(' ')
+today_date_all = today_date[0]
+print(today_date_all)
+
+today_date = today_date_all.split('-')
+year = today_date[0]
+month = today_date[1]
+day = today_date[2]
+
+if int(month) >= 1 and int(month)<= 3:
+    quarter = "Q1"
+elif int(month) >= 4 and int(month)<= 6:
+    quarter = "Q2"
+elif int(month) >= 7 and int(month)<= 9:
+    quarter = "Q3"
+elif int(month) >= 10 and int(month)<= 12:
+    quarter = "Q4"
+
+#設定檔案名稱格式為:2022 Q2 弱掃初掃結果清單
+yearquarter = year + " " +quarter
+filename = f"{yearquarter}" + " " + "弱掃結果清單"
 
 #建立tmp目錄
 try:
@@ -70,7 +89,7 @@ result.insert(1, "漏洞類型", "未定義")
 
 #建立excel存放路徑，以便存放後面分頁的資料
 # result_file = pd.ExcelWriter(rf"W:\1100\1120\資訊安全\資安防範措施\系統弱點掃描\弱點掃描\python\{outputfile}.xlsx", engine='openpyxl')
-result_file = pd.ExcelWriter(rf"c:\tmp\{today}-{outputfile}.xlsx", engine='openpyxl')
+result_file = pd.ExcelWriter(rf"c:\tmp\{filename}.xlsx", engine='openpyxl')
 
 #過濾出Severity欄位為High & 弱點名稱不是"Report outdated / end-of-life Scan Engine / Environment (local)"
     #範例1: df[df[“column_name”] == value]，多字段篩選 : df[(df[“column_name1”] <= value) & (df[“column_name2”] == str)]
