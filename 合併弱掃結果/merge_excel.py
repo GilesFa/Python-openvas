@@ -81,7 +81,14 @@ result["完成確認日期"] = np.nan #此index為16
 result.insert(5, "系統管理者", np.nan)
 result.insert(6, "OS版本", np.nan)
 result.insert(1, "漏洞類型", "未定義")
-#result.insert(1, "漏洞類型", np.nan)
+result.insert(2, "任務季度", f"{yearquarter}")
+
+#完整欄位順序(從1開始)
+# ['任務名稱','任務季度','漏洞類型','弱點描述', '任務執行時間','IP','Hostname','系統管理者','OS版本',
+#  'Port','Port Protocol','CVSS分數','風險等級','CVEs編號','弱點解決方法',
+#  '處理步驟','是否可修補(Y/N)','是否為新弱點(Y/N)','完成確認日期']
+
+
 ###################欄位新增############################
 
 #調整欄位順序
