@@ -50,6 +50,8 @@ index_body = {
         "properties": {
             "ip" : {"type" : "ip"},
             "ip" : {"type" : "keyword"},
+            "任務季度" : {"type" : "text"},
+            "任務季度" : {"type" : "keyword"},
             "任務名稱" : {"type" : "text"},
             "任務名稱" : {"type" : "keyword"},
             "漏洞類型" : {"type" : "text"},
