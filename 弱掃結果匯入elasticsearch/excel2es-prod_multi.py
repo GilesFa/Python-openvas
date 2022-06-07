@@ -34,10 +34,11 @@ filename = f"{yearquarter}" + " " + "弱掃結果清單"
 excelFilePath = rf'C:\tmp\{filename}.xlsx'
 
 #設定elasticsearch所需資訊
-index_name = f"openvas-{today_date_all}"
+# index_name = f"openvas-{today_date_all}"
+index_name = f"openvas-" + f"{year}" + "-" + f"{month}"
 es_user = "elastic"
-es_pwd = "password"
-es_url = "http://192.168.0.10:9200"
+es_pwd = "umec@123"
+es_url = "http://10.0.99.100:9200"
 
 #1. 建立連線=====================================================================
 es = Elasticsearch(f"{es_url}", http_auth=(f'{es_user}', f'{es_pwd}'))
@@ -84,7 +85,7 @@ index_body = {
             "是否可修補(Y/N)" : {"type" : "keyword"},
             "是否為新弱點(Y/N)" : {"type" : "text"},
             "是否為新弱點(Y/N)" : {"type" : "keyword"},
-            "完成確認日期" : {"type" : "text"},
+            "完成確認日期" : {"type" : "date"},
             "完成確認日期" : {"type" : "keyword"}
         }
   }
