@@ -159,5 +159,15 @@ for i in range(list_count_new):
     df_new.loc[df_new['處理步驟'].isnull(), '是否為新弱點(Y/N)'] = 'Y'
     df_new.loc[~df_new['處理步驟'].isnull(), '是否為新弱點(Y/N)'] = 'N'
 print(df_new)
-df_new.to_excel(rf'c:\tmp\{today}-弱掃初掃與複掃合併結果清單.xlsx', sheet_name= f'High-level-ALL', index=False)
 
+#將經過篩選比對的high分頁內容寫入弱掃初掃與複掃合併結果清單，而Medium、Low分頁的資料則是直接從複掃清單複製而未經過過濾比對
+result_file = pd.ExcelWriter(rf"c:\tmp\{today}-弱掃初掃與複掃合併結果清單.xlsx", engine='openpyxl')
+df_new.to_excel(result_file, sheet_name= f'High-level-ALL', index=False)
+
+df_new_Medium = pd.read_excel(rf'c:\tmp\{new_excel}.xlsx', sheet_name='Medium-level')
+df_new_Medium.to_excel(result_file, sheet_name= f'Medium-level', index=False)
+
+df_new_Low = pd.read_excel(rf'c:\tmp\{new_excel}.xlsx', sheet_name='Low-level')
+df_new_Low.to_excel(result_file, sheet_name= f'Low-level', index=False)
+
+result_file.save()
