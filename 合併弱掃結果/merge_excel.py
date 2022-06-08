@@ -76,7 +76,7 @@ result.columns = ['任務名稱','弱點描述', '任務執行時間','IP','Host
 result["處理步驟"] = np.nan
 result["是否可修補(Y/N)"] = np.nan
 result["是否為新弱點(Y/N)"] = "N"
-result["完成確認日期"] = np.nan #此index為16
+result["完成確認日期"] = "尚未確認" #此index為16
 #result["OS版本"] = np.nan，然後插入到特定順序欄位的後面，index從0開始
 result.insert(1, "任務季度", f"{yearquarter}")
 result.insert(2, "漏洞類型", "未定義")
