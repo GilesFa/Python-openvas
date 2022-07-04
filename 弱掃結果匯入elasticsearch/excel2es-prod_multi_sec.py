@@ -34,9 +34,8 @@ filename = f"{yearquarter}" + " " + "弱掃複掃結果清單"
 excelFilePath = rf'C:\tmp\{filename}.xlsx'
 
 #設定elasticsearch所需資訊
-# index_name = f"openvas-{today_date_all}"
-# index_name = f"openvas-" + f"{year}" + "-" + f"{month}"
-index_name = f"openvas-" + f"{year}" + "-" + "07"
+index_name = f"openvas-" + f"{year}" + "-" + f"{month}"
+# index_name = f"openvas-" + f"{year}" + "-" + "07"
 es_user = "elastic"
 es_pwd = "umec@123"
 es_url = "http://10.0.99.100:9200"

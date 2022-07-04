@@ -28,6 +28,7 @@ elif int(month) >= 10 and int(month)<= 12:
 
 #設定檔案名稱格式為:2022 Q2 弱掃初掃結果清單
 yearquarter = year + " " +quarter
+# yearquarter = "2022 Q2"
 filename = f"{yearquarter}" + " " + "弱掃初掃結果清單"
 
 #設定來源excel檔案路徑
@@ -36,7 +37,7 @@ excelFilePath = rf'C:\tmp\{filename}.xlsx'
 #設定elasticsearch所需資訊
 # index_name = f"openvas-{today_date_all}"
 index_name = f"openvas-" + f"{year}" + "-" + f"{month}"
-# index_name = f"openvas-" + f"{year}" + "-" + "07"
+# index_name = f"openvas-" + f"{year}" + "-" + "06"
 es_user = "elastic"
 es_pwd = "umec@123"
 es_url = "http://10.0.99.100:9200"
